@@ -1,0 +1,13 @@
+[package]
+name = "readbin"
+version = "0.1.0"
+authors = ["LSH <github@lsh.tech>"]
+edition = "2018"
+
+[lib]
+name = "headers"
+path = "src/headers.rs"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
