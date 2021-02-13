@@ -20,10 +20,10 @@ use std::mem::size_of;
 
 /// Define the architecture for the binary
 ///
-/// Class defined possible value for a binary
+/// CLASS defined possible value for a binary
 /// Its store in the fifth byte of the identifaction 16 bits called `e_ident`
-pub struct Class {}
-impl Class {
+pub struct CLASS {}
+impl CLASS {
     /// Invalid class
     const NONE: u8 = 0;
     /// 32 bits object
@@ -99,12 +99,12 @@ impl Elf64 {
 impl fmt::Display for Elf64 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         // Write class
-        write!(f, "Class:\t\t\t\t\t").unwrap();
-        match self.e_ident[4] {
-            Class::NONE => write!(f, "Invalid class\n",),
-            Class::ELF32 => write!(f, "ELF32\n"),
-            Class::ELF64 => write!(f, "ELF64\n"),
-            _ => write!(f, "Unknown class\n"),
+        write!(f, "CLASS:\t\t\t\t\t").unwrap();
+        match self.e_ident[indent::CLASS] {
+            CLASS::NONE => write!(f, "Invalid class\n",),
+            CLASS::ELF32 => write!(f, "ELF32\n"),
+            CLASS::ELF64 => write!(f, "ELF64\n"),
+            _ => write!(f, "Warning: unknown class\n"),
         }
     }
 }
