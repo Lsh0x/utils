@@ -1,4 +1,5 @@
 use crate::utils::cow_struct;
+use std::fmt;
 use std::mem::size_of;
 
 //pub struct indent {}
@@ -15,6 +16,21 @@ use std::mem::size_of;
 //    const ABIVERSION: usize = 8;
 //    const PAD: usize = 9;
 //}
+//
+
+/// Define the architecture for the binary
+///
+/// CLASS defined possible value for a binary
+/// Its store in the fifth byte of the identifaction 16 bits called `e_ident`
+pub struct CLASS {}
+impl CLASS {
+    /// Invalid class
+    const NONE: u8 = 0;
+    /// 32 bits object
+    const ELF32: u8 = 1;
+    /// 32 bits object
+    const ELF64: u8 = 2;
+}
 
 /// Format of Executable and Linking Format (ELF64) files
 ///
@@ -71,11 +87,24 @@ impl Elf64 {
         if data.len() < Self::SIZE {
             return None;
         }
-        let (header_bytes, data) = data.split_at(Elf64::SIZE);
+        let (header_bytes, _data) = data.split_at(Elf64::SIZE);
         match cow_struct::<Self>(header_bytes) {
-            Some(header) => println!("{:?}", header),
+            Some(header) => println!("{}", header),
             None => println!("failed !"),
         }
         return None;
+    }
+}
+
+impl fmt::Display for Elf64 {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        // Write class
+        write!(f, "CLASS:\t\t\t\t\t").unwrap();
+        match self.e_ident[indent::CLASS] {
+            CLASS::NONE => write!(f, "Invalid class\n",),
+            CLASS::ELF32 => write!(f, "ELF32\n"),
+            CLASS::ELF64 => write!(f, "ELF64\n"),
+            _ => write!(f, "Warning: unknown class\n"),
+        }
     }
 }
