@@ -111,21 +111,28 @@ impl Elf64 {
 
 impl fmt::Display for Elf64 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "ELF Hearder:\n");
+        // Write indent
+        write!(f, "Magic:\t\t\t\t\t");
+        for byte in self.e_ident.iter() {
+            write!(f, "{:02X?} ", byte);
+        }
+
         // Write class
-        write!(f, "CLASS:\t\t\t\t\t").unwrap();
+        write!(f, "\nClass:\t\t\t\t\t").unwrap();
         match self.e_ident[indent::CLASS] {
-            CLASS::NONE => write!(f, "Invalid class\n",),
-            CLASS::ELF32 => write!(f, "ELF32\n"),
-            CLASS::ELF64 => write!(f, "ELF64\n"),
-            _ => write!(f, "Warning: unknown class\n"),
+            CLASS::NONE => write!(f, "Invalid class",),
+            CLASS::ELF32 => write!(f, "ELF32"),
+            CLASS::ELF64 => write!(f, "ELF64"),
+            _ => write!(f, "Warning: unknown class"),
         };
 
         // write data encoding
-        write!(f, "DATA:\t\t\t\t\t").unwrap();
+        write!(f, "\nData:\t\t\t\t\t").unwrap();
         match self.e_ident[indent::DATA] {
-            DATA::NONE => write!(f, "Unknown data encodingi\n"),
-            DATA::BE => write!(f, "2's complement, big endian\n"),
-            DATA::LE => write!(f, "2's complement, little endian\n"),
+            DATA::NONE => write!(f, "Unknown data encoding"),
+            DATA::BE => write!(f, "2's complement, big endian"),
+            DATA::LE => write!(f, "2's complement, little endian"),
             _ => write!(f, "Warning: unknow data encoding"),
         }
     }
