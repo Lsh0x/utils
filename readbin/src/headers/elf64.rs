@@ -2,21 +2,20 @@ use crate::utils::cow_struct;
 use std::fmt;
 use std::mem::size_of;
 
-//pub struct indent {}
-//
-//impl indent {
-//    const MAG0: usize = 0;
-//    const MAG1: usize = 1;
-//    const MAG2: usize = 2;
-//    const MAG3: usize = 3;
-//    const CLASSPATH: usize = 4;
-//    const DATA: usize = 5;
-//    const VERSION: usize = 6;
-//    const OSABIT: usize = 7;
-//    const ABIVERSION: usize = 8;
-//    const PAD: usize = 9;
-//}
-//
+/// Identification offset for the elf binary `e_ident` field
+pub struct indent {}
+impl indent {
+    const MAG0: usize = 0;
+    const MAG1: usize = 1;
+    const MAG2: usize = 2;
+    const MAG3: usize = 3;
+    const CLASS: usize = 4;
+    const DATA: usize = 5;
+    const VERSION: usize = 6;
+    const OSABIT: usize = 7;
+    const ABIVERSION: usize = 8;
+    const PAD: usize = 9;
+}
 
 /// Define the architecture for the binary
 ///
@@ -30,6 +29,20 @@ impl CLASS {
     const ELF32: u8 = 1;
     /// 32 bits object
     const ELF64: u8 = 2;
+}
+
+/// Define the data encoding for the processor-specific data
+///
+/// Data define possible values for the encoding
+/// Its store in the sixth byte of the identifaction 16 bits called `e_ident`
+pub struct DATA {}
+impl DATA {
+    /// Unknow data encoding
+    const NONE: u8 = 0;
+    /// Little endian data encoding
+    const LE: u8 = 1;
+    /// Big endian data encoding
+    const BE: u8 = 2;
 }
 
 /// Format of Executable and Linking Format (ELF64) files
@@ -105,6 +118,15 @@ impl fmt::Display for Elf64 {
             CLASS::ELF32 => write!(f, "ELF32\n"),
             CLASS::ELF64 => write!(f, "ELF64\n"),
             _ => write!(f, "Warning: unknown class\n"),
+        };
+
+        // write data encoding
+        write!(f, "DATA:\t\t\t\t\t").unwrap();
+        match self.e_ident[indent::DATA] {
+            DATA::NONE => write!(f, "Unknown data encodingi\n"),
+            DATA::BE => write!(f, "2's complement, big endian\n"),
+            DATA::LE => write!(f, "2's complement, little endian\n"),
+            _ => write!(f, "Warning: unknow data encoding"),
         }
     }
 }
