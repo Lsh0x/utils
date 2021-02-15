@@ -45,6 +45,18 @@ impl DATA {
     const BE: u8 = 2;
 }
 
+/// Define the version number of the elf specification
+///
+/// Version define possible values for the version number
+/// Its store in the seventh byte of the identifaction 16 bits called `e_ident`
+pub struct VERSION {}
+impl VERSION {
+    /// invalid version
+    const NONE: u8 = 0;
+    /// current elf version
+    const CURRENT: u8 = 1;
+}
+
 /// Format of Executable and Linking Format (ELF64) files
 ///
 /// The header file <elf.h> defines the format of ELF executable
@@ -134,6 +146,13 @@ impl fmt::Display for Elf64 {
             DATA::BE => write!(f, "2's complement, big endian"),
             DATA::LE => write!(f, "2's complement, little endian"),
             _ => write!(f, "Warning: unknow data encoding"),
+        };
+
+        write!(f, "\nVersion:\t\t\t\t").unwrap();
+        match self.e_ident[indent::VERSION] {
+            VERSION::NONE => write!(f, "Invalid version"),
+            VERSION::CURRENT => write!(f, "{} (current)", self.e_ident[indent::VERSION]),
+            _ => write!(f, "Warning: unknow version"),
         }
     }
 }
