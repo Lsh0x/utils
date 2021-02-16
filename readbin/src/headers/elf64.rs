@@ -57,6 +57,45 @@ impl VERSION {
     const CURRENT: u8 = 1;
 }
 
+pub struct OSABIT {}
+
+/// Define the target operating system  application binary interface
+///
+/// OSABIT define the possible values for the target operation system
+/// Its store in the seventh byte of the identifaction 16 bits called `e_ident`
+impl OSABIT {
+    /// UNIX System V ABI
+    const NONE: u8 = 0;
+    /// Alias.
+    const SYSV: u8 = 0;
+    /// HP-UX
+    const HPUX: u8 = 1;
+    /// NetBSD.
+    const NETBSD: u8 = 2;
+    /// Object use GNU ELF extensions
+    const GNU: u8 = 3;
+    /// Sun Solaris
+    const SOLARIS: u8 = 6;
+    /// IBM AIX
+    const AIX: u8 = 7;
+    /// SGI Irix
+    const IRIX: u8 = 8;
+    /// FreeBSD
+    const FREEBSD: u8 = 9;
+    /// Compaq tru64 unix
+    const TRU64: u8 = 10;
+    /// Novell Modesto
+    const MODESTO: u8 = 11;
+    /// OpenBSD
+    const OPENBSD: u8 = 12;
+    /// ARM EABI
+    const ARM_AEABI: u8 = 64;
+    /// ARM
+    const ARM: u8 = 97;
+    /// Standalone embedded application
+    const STANDALONE: u8 = 255;
+}
+
 /// Format of Executable and Linking Format (ELF64) files
 ///
 /// The header file <elf.h> defines the format of ELF executable
@@ -153,6 +192,24 @@ impl fmt::Display for Elf64 {
             VERSION::NONE => write!(f, "Invalid version"),
             VERSION::CURRENT => write!(f, "{} (current)", self.e_ident[indent::VERSION]),
             _ => write!(f, "Warning: unknow version"),
+        };
+        write!(f, "\nOS/ABI:\t\t\t\t\t").unwrap();
+        match self.e_ident[indent::OSABIT] {
+            OSABIT::SYSV => write!(f, "UNIX System V ABI"),
+            OSABIT::HPUX => write!(f, "HP-UX"),
+            OSABIT::NETBSD => write!(f, "NetBSD"),
+            OSABIT::GNU => write!(f, "Object use GNU ELF extensions"),
+            OSABIT::SOLARIS => write!(f, "Sun Solaris"),
+            OSABIT::AIX => write!(f, "IBM AIX"),
+            OSABIT::IRIX => write!(f, "SGI Irix"),
+            OSABIT::FREEBSD => write!(f, "FreeBSD"),
+            OSABIT::TRU64 => write!(f, "Compaq tru64 unix"),
+            OSABIT::MODESTO => write!(f, "Novell Modesto"),
+            OSABIT::OPENBSD => write!(f, "OpenBSD"),
+            OSABIT::ARM_AEABI => write!(f, "ARM AEABI"),
+            OSABIT::ARM => write!(f, "ARM"),
+            OSABIT::STANDALONE => write!(f, "Standalone embedded application"),
+            _ => write!(f, "Warning: unknow operating system target"),
         }
     }
 }
