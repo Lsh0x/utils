@@ -210,6 +210,12 @@ impl fmt::Display for Elf64 {
             OSABIT::ARM => write!(f, "ARM"),
             OSABIT::STANDALONE => write!(f, "Standalone embedded application"),
             _ => write!(f, "Warning: unknow operating system target"),
+        };
+
+        write!(f, "\nABI Version:\t\t\t\t").unwrap();
+        match self.e_ident[indent::ABIVERSION] {
+            0 => write!(f, "0"),
+            _ => write!(f, "Warning: Not compatible with the specification"),
         }
     }
 }
