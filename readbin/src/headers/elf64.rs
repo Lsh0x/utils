@@ -95,6 +95,22 @@ impl OSABIT {
     const STANDALONE: u8 = 255;
 }
 
+/// Define the object file type
+pub struct TYPE {}
+
+impl TYPE {
+    /// No file type
+    const NONE: u16 = 0;
+    /// Relocatable file
+    const REL: u16 = 1;
+    /// Executable file
+    const EXEC: u16 = 2;
+    /// Share object file
+    const DYN: u16 = 3;
+    /// Core file
+    const CORE: u16 = 4;
+}
+
 /// Format of Executable and Linking Format (ELF64) files
 ///
 /// The header file <elf.h> defines the format of ELF executable
@@ -225,6 +241,17 @@ impl fmt::Display for Elf64 {
             0 => "0",
             _ => "Warning: Not compatible with the specification",
         };
-        write!(f, "ABI Version:\t\t\t\t{}\n", abi_version_message)
+        write!(f, "ABI Version:\t\t\t\t{}\n", abi_version_message);
+
+        // write object file type
+        let obj_type = match self.e_type {
+            TYPE::NONE => "NONE (No file type)",
+            TYPE::REL => "REL (Relocatable file)",
+            TYPE::EXEC => "EXEC (Executable file)",
+            TYPE::DYN => "DYN (Share object file)",
+            TYPE::CORE => "CORE (Core file)",
+            _ => "Warning: unknow object file type",
+        };
+        write!(f, "Type: \t\t\t\t\t{}\n", obj_type)
     }
 }
