@@ -241,7 +241,7 @@ impl fmt::Display for Elf64 {
             0 => "0",
             _ => "Warning: Not compatible with the specification",
         };
-        write!(f, "ABI Version:\t\t\t\t{}\n", abi_version_message);
+        write!(f, "ABI Version:\t\t\t\t{}\n", abi_version_message).unwrape();
 
         // write object file type
         let obj_type = match self.e_type {
