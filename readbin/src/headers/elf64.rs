@@ -182,7 +182,7 @@ impl fmt::Display for Elf64 {
         // Write indent
         write!(
             f,
-            "Magic:\t\t\t\t\t{}\n",
+            " Magic:\t\t\t\t\t{}\n",
             self.e_ident
                 .iter()
                 .map(|hex| format!("{:02X?} ", hex))
@@ -197,7 +197,7 @@ impl fmt::Display for Elf64 {
             CLASS::ELF64 => "ELF64",
             _ => "Warning: unknown class",
         };
-        write!(f, "Class:\t\t\t\t\t{}, \n", class).unwrap();
+        write!(f, " Class:\t\t\t\t\t{}, \n", class).unwrap();
 
         // write data encoding
         let data_encoding = match self.e_ident[Indent::DATA] {
@@ -206,7 +206,7 @@ impl fmt::Display for Elf64 {
             DATA::LE => "2's complement, little endian",
             _ => "Warning: unknow data encoding",
         };
-        write!(f, "Data:\t\t\t\t\t{}\n", data_encoding).unwrap();
+        write!(f, " Data:\t\t\t\t\t{}\n", data_encoding).unwrap();
 
         // write current number version of elf specification
         let current = format!("{} (current)", self.e_ident[Indent::VERSION]);
@@ -215,7 +215,7 @@ impl fmt::Display for Elf64 {
             VERSION::CURRENT => current.as_str(),
             _ => "Warning: unknow version",
         };
-        write!(f, "Version:\t\t\t\t{}\n", version).unwrap();
+        write!(f, " Version:\t\t\t\t{}\n", version).unwrap();
 
         // write target os application binary interface
         let osabit = match self.e_ident[Indent::OSABIT] {
@@ -235,13 +235,13 @@ impl fmt::Display for Elf64 {
             OSABIT::STANDALONE => "Standalone embedded application",
             _ => "Warning: unknow operating system target",
         };
-        write!(f, "OS/ABI:\t\t\t\t\t{}\n", osabit).unwrap();
+        write!(f, " OS/ABI:\t\t\t\t\t{}\n", osabit).unwrap();
 
         let abi_version_message = match self.e_ident[Indent::ABIVERSION] {
             0 => "0",
             _ => "Warning: Not compatible with the specification",
         };
-        write!(f, "ABI Version:\t\t\t\t{}\n", abi_version_message).unwrape();
+        write!(f, " ABI Version:\t\t\t\t{}\n", abi_version_message).unwrap();
 
         // write object file type
         let obj_type = match self.e_type {
@@ -252,6 +252,6 @@ impl fmt::Display for Elf64 {
             TYPE::CORE => "CORE (Core file)",
             _ => "Warning: unknow object file type",
         };
-        write!(f, "Type: \t\t\t\t\t{}\n", obj_type)
+        write!(f, " Type: \t\t\t\t\t{}\n", obj_type)
     }
 }
