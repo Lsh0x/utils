@@ -235,7 +235,7 @@ impl fmt::Display for Elf64 {
             OSABIT::STANDALONE => "Standalone embedded application",
             _ => "Warning: unknow operating system target",
         };
-        write!(f, " OS/ABI:\t\t\t\t\t{}\n", osabit).unwrap();
+        write!(f, " OS/ABI:\t\t\t\t{}\n", osabit).unwrap();
 
         let abi_version_message = match self.e_ident[Indent::ABIVERSION] {
             0 => "0",
