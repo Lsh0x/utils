@@ -1,4 +1,4 @@
-use readbin::headers::*;
+use readbin::headers::elf::x64;
 use std::env;
 use std::fs;
 
@@ -7,7 +7,7 @@ fn main() {
     match args.len() {
         2 => match fs::read(&args[1]) {
             Ok(data) => {
-                elf::Elf64::from_bytes(&data);
+                x64::from_bytes(&data);
             }
             Err(err) => println!("Error reading binary: {}", err),
         },
