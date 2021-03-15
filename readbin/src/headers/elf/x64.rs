@@ -150,6 +150,11 @@ impl fmt::Display for x64 {
             TYPE::CORE => "CORE (Core file)",
             _ => "Warning: unknow object file type",
         };
-        write!(f, " Type: \t\t\t\t\t{}\n", obj_type)
+        write!(f, " Type: \t\t\t\t\t{}\n", obj_type);
+
+        // TODO add machine
+
+        // write current number version of elf specification
+        write!(f, " Version:\t\t\t\t{:#x}\n", self.e_version)
     }
 }
